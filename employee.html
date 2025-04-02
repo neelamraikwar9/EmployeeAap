@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Company Employees</title>
+    <link
+    href="
+  https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <header class="bg-dark text-light text-center py-3">  
+        <!-- <a href="index.html">Company Logo<a>
+        <nav>
+            <ul>  
+            <li><a href="index.html">Home</a></li>
+            </ul>    -->
+        </nav>
+        <h1>List of Employees</h1>
+    </header>
+    <!-- <main class="container mt-4">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+            <h5>John Doe</h5>
+             <p>Software Developer</p>
+             </div>
+                <a class="btn btn-link" href="employeeDetails.html?id=1">View Details</a>
+                </li>
+               <li  class="list-group-item d-flex justify-content-between align-items-center class="btn btn-link"">
+                <div>
+                <h5>Jane Smith</h5>
+                <p>Designer</p>
+                </div>
+                <a href="employeeDetails.html?id=2">View Details</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" class="btn btn-link">
+                <div>
+                <h5>Bob johnson</h5>
+                <p>Project Manager</p>
+                </div>
+                <a href="employeeDetails.html?id=3">View Details</a> 
+            </li>
+        </ul>
+    </main> -->
+
+   <section class="container py-3">
+    <form>
+      <label for="departmentFilter">Filter by Department:</label>
+      <br>
+      <select id="departmentFilter">
+        <option value="all">All Departments</option>
+        <option value="IT">IT</option>
+        <option value="Design">Design</option>
+        <option value="Management">Management</option>
+        </select>
+        <br>
+        <br>
+        <h2>Add Employee</h2>    
+        <label for="name">Name:</label>
+        <br>
+        <input type="text" id="name" class="form-control"/>
+        <br>
+        
+        <label for="title">Title:</label>
+        <input type="text" id="title" class="form-control"/>
+        <br>
+        
+        <label for="selectDepart">Department:</label>
+        <select id="selectDepart" class="form-control" >
+          <option value="IT">IT</option>
+          <option value="Design">Design</option>
+          <option value="Management">Management</option>
+          </select>
+        <br>
+        <button type="button" id="addEmployeeBtn" class="btn btn-primary">Add Employee</button>
+    </form>  
+        </section>
+  
+ 
+ <div class="container" id="employeeList"></div>
+
+
+    <script>
+      const employee = [
+        { id: 1, name: "John Doe", profession: "Software Developer", department:"IT" },
+        { id: 2, name: "Jane Smith", profession: "Designer", department:"Design"},
+        { id: 3, name: "Bob Johnson", profession: "Project Manager", department:"Management"}
+      ]
+
+      const employeeList = document.querySelector("#employeeList")
+      const addEmployeeBtn = document.querySelector("#addEmployeeBtn")
+      const departmentFilter = document.querySelector("#departmentFilter")
+
+
+      function updateEmployeeList(filteredDepartment){
+      employeeList.innerHTML = " "
+
+      for(let i = 0; i <  filteredDepartment.length; i++){
+        const ul = document.createElement('ul')
+        ul.className = "list-group"
+
+        const li = document.createElement('li')
+        li.classList.add("list-group-item", "d-flex", "justify-content-between");
+
+       const div = document.createElement('div')
+      //  div.innerHTML = `<h5>${employee[i].name}</h5> 
+      //  <p>${employee[i].profession}</p>`
+       console.log(div)
+        
+
+        const h = document.createElement('h5')
+        h.innerHTML = `${filteredDepartment[i].name}`
+
+        const p = document.createElement('p')
+        p.innerHTML = `${filteredDepartment[i].profession}`
+
+        
+        const detailLink = document.createElement('a')
+        detailLink.href = `employeeDetails.html?id=${filteredDepartment[i].id}`
+        detailLink.textContent = "Details"
+        detailLink.classList.add = ""
+
+        ul.appendChild(li)
+        div.appendChild(h)
+        div.appendChild(p)
+        li.appendChild(div)
+        li.appendChild(detailLink)
+
+        employeeList.appendChild(ul)
+
+      }
+      }
+
+      addEmployeeBtn.addEventListener("click", function(){
+        const name = document.querySelector("#name").value
+        const title = document.querySelector("#title").value
+        const selectDepart = document.querySelector("#selectDepart").value
+
+        if(name && title && selectDepart){
+          const newEmployeeId = employee.length + 1
+          const newEmployee = {
+            id:newEmployeeId,
+            name:name,
+            profession:title,
+            department:selectDepart
+          };
+          employee.push(newEmployee)
+          updateEmployeeList(employee)
+        }
+      })
+
+      
+      departmentFilter.addEventListener("change", applyDepartmentFilter)
+
+       function applyDepartmentFilter(){
+         const selectedDepartment =  departmentFilter.value
+        //  console.log(selectedDepartment)
+
+         const filteredDepartment = []
+
+        
+         if(selectedDepartment !== "all"){ 
+           for(let i = 0; i < employee.length; i++){
+             if(employee[i].department === selectedDepartment){
+               filteredDepartment.push(employee[i])
+               }
+             }
+           }
+           updateEmployeeList(filteredDepartment)
+          }
+       
+      updateEmployeeList(employee)
+       </script>
+
+  </body>
+</html>
+    
